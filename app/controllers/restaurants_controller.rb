@@ -22,39 +22,26 @@ class RestaurantsController < ApplicationController
   # POST /restaurants or /restaurants.json
   def create
     @restaurant = Restaurant.new(restaurant_params)
-
-    respond_to do |format|
-      if @restaurant.save
-        format.html { redirect_to restaurant_url(@restaurant), notice: "Restaurant was successfully created." }
-        format.json { render :show, status: :created, location: @restaurant }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @restaurant.errors, status: :unprocessable_entity }
-      end
+    if @restaurant.save
+      redirect_to restaurant_url(@restaurant), notice: "Restaurant was successfully created."
+    else
+      render :new, status: :unprocessable_entity # Indica el error en el formulario y hace un renderizado
     end
   end
 
   # PATCH/PUT /restaurants/1 or /restaurants/1.json
   def update
-    respond_to do |format|
-      if @restaurant.update(restaurant_params)
-        format.html { redirect_to restaurant_url(@restaurant), notice: "Restaurant was successfully updated." }
-        format.json { render :show, status: :ok, location: @restaurant }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @restaurant.errors, status: :unprocessable_entity }
-      end
+    if @restaurant.update(restaurant_params)
+      redirect_to restaurant_url(@restaurant), notice: "Restaurant was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity # Indica el error en el formulario y hace un renderizado
     end
   end
 
   # DELETE /restaurants/1 or /restaurants/1.json
   def destroy
     @restaurant.destroy
-
-    respond_to do |format|
-      format.html { redirect_to restaurants_url, notice: "Restaurant was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to restaurants_url, notice: "Restaurant was successfully destroyed."
   end
 
   private

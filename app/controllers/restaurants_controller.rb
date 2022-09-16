@@ -22,10 +22,15 @@ class RestaurantsController < ApplicationController
   # POST /restaurants or /restaurants.json
   def create
     @restaurant = Restaurant.new(restaurant_params)
-    if @restaurant.save
-      redirect_to restaurant_url(@restaurant), notice: "Restaurant was successfully created."
+
+    if @restaurant.valid?
+      if @restaurant.save
+        redirect_to restaurant_url(@restaurant), notice: "Restaurant was successfully created."
+      else
+        render :new, status: :unprocessable_entity # Indica el error en el formulario y hace un renderizado
+      end
     else
-      render :new, status: :unprocessable_entity # Indica el error en el formulario y hace un renderizado
+      @restaurant.errors.full_messages
     end
   end
 
